@@ -8,6 +8,16 @@ from . import service
 task_routes = Blueprint('task', __name__)
 
 
+@task_routes.route('/tasks')
+def get_tasks():
+  try:
+    tasks = service.get_tasks()
+    return jsonify({'result': tasks}), HTTPStatus.OK
+  except Exception as e:
+    current_app.logger.error('get task list error: ', e)
+    abort(HTTPStatus.BAD_REQUEST)
+
+
 @task_routes.route('/task', methods=['POST'])
 @use_kwargs({ 'name': fields.Str(required=True) })
 def add_task(name: str):
