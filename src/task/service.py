@@ -10,9 +10,16 @@ def add_task(name: str) -> TaskSchema:
     'name': name,
     'status': 0,
   })
-  tasks_map[task['id']] = task
+  tasks_map[str(task['id'])] = task
 
   return task
 
 def get_tasks() -> List[TaskSchema]:
   return list(tasks_map.values())
+
+def update_task(task_id: str, updates: dict) -> TaskSchema:
+  if task_id not in tasks_map:
+    return None
+
+  tasks_map[task_id] |= updates
+  return tasks_map[task_id]
