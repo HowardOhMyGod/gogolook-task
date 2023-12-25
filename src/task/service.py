@@ -23,3 +23,6 @@ def update_task(task_id: str, updates: dict) -> TaskSchema:
 
   tasks_map[task_id] |= updates
   return tasks_map[task_id]
+
+def delete_task(task_id: str) -> None:
+  return tasks_map.pop(task_id, None)

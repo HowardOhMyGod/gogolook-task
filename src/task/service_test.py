@@ -64,3 +64,18 @@ class TestUpdateTask:
     assert task['name'] == 'Howard'
     assert task['status'] == 0
     assert task['id'] == '1'
+
+
+class TestDeleteTask:
+  def test_delete_not_found_task(self):
+    service.tasks_map = {}
+    res = service.delete_task('1')
+
+    assert res is None
+
+  def test_delete_task(self):
+    service.tasks_map = {'1': {'name': 'Howard', 'status': 0, 'id': '1'}}
+    res = service.delete_task('1')
+
+    assert res['id'] == '1'
+    assert len(service.tasks_map) == 0

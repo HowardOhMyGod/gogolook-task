@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify, abort, current_app
+from flask import Blueprint, jsonify, abort, current_app, Response
 from http import HTTPStatus
 from webargs import fields
 from webargs.flaskparser import use_kwargs, use_args
@@ -38,4 +38,14 @@ def update_task(updates: dict, task_id: str):
     return jsonify({'result': task}), HTTPStatus.OK
   except Exception as e:
     current_app.logger.error('update task error: ', e)
+    abort(HTTPStatus.BAD_REQUEST)
+
+
+@task_routes.route('/task/<task_id>', methods=['DELETE'])
+def delete_task(task_id: str):
+  try:
+    service.delete_task(task_id)
+    return Response(status=HTTPStatus.OK)
+  except Exception as e:
+    current_app.logger.error('delete task error: ', e)
     abort(HTTPStatus.BAD_REQUEST)
